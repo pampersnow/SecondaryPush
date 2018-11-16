@@ -26,7 +26,7 @@ public class SynUtil {
 	private static HashMap<String,String> driverMap = new HashMap<String,String>();
 	private static HashMap<String,String> IpMap = new HashMap<String,String>();
 	static{
-		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//10.0.9.30:1521/oradb,YJ_ZW_WCM,YJ_ZW_WCM!");
+		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//0.0.9.0:1521/db,root,1234");
 		IpMap.put("1", "10.0.9.134");
 	}
 	/*
