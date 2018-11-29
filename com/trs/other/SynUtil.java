@@ -26,7 +26,7 @@ public class SynUtil {
 	private static HashMap<String,String> driverMap = new HashMap<String,String>();
 	private static HashMap<String,String> IpMap = new HashMap<String,String>();
 	static{
-		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//0.0.9.0:1521/db,root,1234");
+		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//0.0.0.0:1521/db,root,1234");
 		IpMap.put("1", "0.0.0.1");
 	}
 	/*
@@ -36,20 +36,19 @@ public class SynUtil {
 	 * 3.保存映射数据的栏目ID
 	 * */
 	public void siteJoin_syn(int jsd_sysid,int tsd_sysid,int cid)throws WCMException{
-		if(jsd_sysid == tsd_sysid){	//查询系统内
-			ArrayList<HashMap<String,String>> xtn = this.queryXtn(jsd_sysid);
-			if(xtn.size() != 0){
-				//for循环   map集合   this.接口
-				System.err.println(xtn.get(0));
-				for (int i = 0; i < xtn.size(); i++) {
-					HashMap<String, String> hashmap = new HashMap<String, String>();
-					
-					
-					this.insertSiteJoin(hashmap, cid);
-				}
+		//查询系统内	
+		if(jsd_sysid == tsd_sysid){						
+			ArrayList<HashMap<String, String>> xtn = queryXtn(jsd_sysid);				
+			for (HashMap<String, String> hashMap : xtn) {
+				 this.insertSiteJoin(hashMap, cid);
 			}
-		}else{						//查询系统间
+		}
+		//查询系统间	
+		else{  	
 			ArrayList<HashMap<String,String>> xtj = this.queryXtj(jsd_sysid,tsd_sysid);
+				for (HashMap<String, String> hashMap : xtj) {
+					this.insertSiteJoin(hashMap, cid);
+				}
 		}
 	}
 	
