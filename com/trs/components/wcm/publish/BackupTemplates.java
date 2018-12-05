@@ -37,7 +37,7 @@ public class BackupTemplates extends BaseStatefulScheduleWorker {
 	 * @see com.trs.infra.util.job.BaseJob#execute()
 	 */
 	protected void execute() throws WCMException {
-		// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
+		// ³õÊ¼»¯ÉÏÏÂÎÄ¶ÔÏó
 		String userName = getArgAsString("CrUser");
 		ContextHelper.initContext(User.getSystem());
 		User m_oScheduleUser = User.findByName(userName);
@@ -46,21 +46,21 @@ public class BackupTemplates extends BaseStatefulScheduleWorker {
 		}
 
 		ContextHelper.setLoginUser(m_oScheduleUser);
-		// ï¿½ï¿½È¡ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+		// »ñÈ¡¶¨Ê±±¸·ÝÄ£°åµÄÂ·¾¶
 		String sDstPath = getArgAsString("DstPath");
 		sDstPath = CMyString.isEmpty(sDstPath) ? "/tmp/" : sDstPath.trim();
 		sDstPath = CMyString.setStrEndWith(sDstPath, File.separatorChar);
 		sDstPath += CMyDateTime.now().toString("yyyyMMdd") + File.separatorChar;
 
-		// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½
+		// »ñÈ¡ËùÓÐÕ¾µã
 		WCMFilter filter = new WCMFilter("", "Status>=0", "SiteId");
 		WebSites sites = WebSites.openWCMObjs(null, filter);
 
-		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+		// ±éÀúÖð¸ö±¸·ÝÕ¾µãÖÐËùÓÐÄ£°å
 		TemplateMgr oTemplateMgr = (TemplateMgr) DreamFactory
 				.createObjectById("TemplateMgr");
 		try {
-			System.out.println("templete backup startï¿½ï¿½");
+			System.out.println("templete backup start£¡");
 			for (int i = 0, nSize = sites.size(); i < nSize; i++) {
 				WebSite site = (WebSite) sites.getAt(i);
 				System.out
@@ -76,7 +76,7 @@ public class BackupTemplates extends BaseStatefulScheduleWorker {
 					sitetype = "vod";
 				if (site.getType() == 4)
 					sitetype = "sourcedb";
-				// ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½Ç°Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ä£ï¿½ï¿½
+				// ²éÑ¯³öµ±Ç°Õ¾µãËùÓÐµÄÄ£°å
 				IPublishFolder folder = (IPublishFolder) PublishElementFactory
 						.makeElementFrom(site);
 				Templates templates = oTemplateMgr.getManagedTemplates(folder,
@@ -87,20 +87,20 @@ public class BackupTemplates extends BaseStatefulScheduleWorker {
 				if (templates.isEmpty()) {
 					continue;
 				}
-				// ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½
+				// µ¼³öÎÄµµ
 				TemplateExporter exporter = new TemplateExporter();
 				String sExportFile = exporter.export(templates);
 
-				// ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Ä¿Â¼ï¿½ï¿½
+				// ½«ÎÄ¼þÒÆ¶¯µ½Ö¸¶¨Ä¿Â¼ÖÐ
 				String sDstFilePath = sDstPath + site.getId() + "_" + sitetype
 						+ "_" + site.getDataPath() + File.separatorChar;
 				File pathFile = new File(sDstFilePath);
-				pathFile.mkdirs(); // ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ä¿Â¼
+				pathFile.mkdirs(); // ´´½¨Ä¿±êÄ¿Â¼
 				String sSrcFilePath = FilesMan.getFilesMan().mapFilePath(
 						sExportFile, FilesMan.PATH_LOCAL);
 				File oSrcFile = new File(sSrcFilePath + sExportFile);
 				oSrcFile.renameTo(new File(sDstFilePath + site.getId() + "_"
-						+ sitetype + "_" + site.getDataPath() + ".zip"));// ï¿½Æ¶ï¿½ï¿½Ä¼ï¿½
+						+ sitetype + "_" + site.getDataPath() + ".zip"));// ÒÆ¶¯ÎÄ¼þ
 			}
 			System.out.println("templete backup end!");
 		} catch (Exception e) {
