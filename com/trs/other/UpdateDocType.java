@@ -28,7 +28,10 @@ import com.trs.infra.common.WCMException;
 import com.trs.infra.persistent.WCMFilter;
 import com.trs.infra.persistent.db.DBManager;
 import com.trs.infra.util.CMyString;
-
+/**
+ * @author JYB
+ * @date  2018.11
+ */
 public class UpdateDocType extends BaseStatefulScheduleWorker {
 
 	private static Logger s_logger = Logger
@@ -38,7 +41,7 @@ public class UpdateDocType extends BaseStatefulScheduleWorker {
 	protected void execute() throws WCMException {
 		String sSfqy = CMyString.showNull(getArgAsString("sfqy"), "0");
 		if (!("1".equals(sSfqy))) {
-			s_logger.info(" 未启用该策略！");
+			s_logger.info(" 未启用该策略！");   
 			return;
 		}
 		String siteid = CMyString.showNull(getArgAsString("siteid"), "0");
@@ -112,8 +115,7 @@ public class UpdateDocType extends BaseStatefulScheduleWorker {
 											doccontent);
 									document.save();
 									//this.resetPublish(document);
-								}
-								
+								}							
 								//判断没有正文并且只有一条附件的
 								if("".equals(doccontent) || "&nbsp;".equals(doccontent) || doccontent == null){
 									AppendixMgr mgr = new AppendixMgr();
@@ -139,7 +141,8 @@ public class UpdateDocType extends BaseStatefulScheduleWorker {
 			e.printStackTrace();
 		}
 	}
-
+	
+	@SuppressWarnings("unused")
 	private void resetPublish(Document document) throws Exception {
 		IPublishContent ipContent = PublishElementFactory.makeContentFrom(
 				document, null);
@@ -224,6 +227,7 @@ public class UpdateDocType extends BaseStatefulScheduleWorker {
 		return isurl;
 	}
 
+	@SuppressWarnings("unused")
 	private static String getHref(String content) throws Exception {
 		String regex = "<a[\\s]+href[\\s]*=[\\s]*\"([^<\"]+)\"";
 		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);

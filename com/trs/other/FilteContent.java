@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -15,14 +14,9 @@ import org.apache.log4j.Logger;
 import com.trs.cms.ContextHelper;
 import com.trs.cms.auth.persistent.User;
 import com.trs.components.common.job.BaseStatefulScheduleWorker;
-import com.trs.components.common.publish.PublishConstants;
-import com.trs.components.common.publish.domain.PublishServer;
-import com.trs.components.common.publish.persistent.element.IPublishContent;
-import com.trs.components.common.publish.persistent.element.PublishElementFactory;
 import com.trs.components.wcm.content.persistent.Channel;
 import com.trs.components.wcm.content.persistent.Channels;
 import com.trs.components.wcm.content.persistent.Document;
-import com.trs.components.wcm.content.persistent.Documents;
 import com.trs.infra.common.WCMException;
 import com.trs.infra.persistent.WCMFilter;
 import com.trs.infra.persistent.db.DBManager;
@@ -37,7 +31,7 @@ public class FilteContent extends BaseStatefulScheduleWorker {
 	protected void execute() throws WCMException {
 		String sSfqy = CMyString.showNull(getArgAsString("sfqy"), "0");
 		if (!("1".equals(sSfqy))) {
-			s_logger.info(" 未启用该策略！");
+			s_logger.info(" 未启用该策略！");  
 			return;
 		}
 		String siteid = CMyString.showNull(getArgAsString("siteid"), "0");

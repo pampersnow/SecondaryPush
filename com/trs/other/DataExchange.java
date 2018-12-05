@@ -15,9 +15,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import com.trs.cms.ContextHelper;
 import com.trs.cms.auth.persistent.User;
 import com.trs.components.wcm.content.domain.AppendixMgr;
@@ -34,10 +31,13 @@ import com.trs.web2frame.dispatch.Dispatch;
 import com.trs.web2frame.util.JsonHelper;
 import com.trs.webframework.controler.JSPRequestProcessor;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 public class DataExchange {
 
 	/*
-	 * 查询所有服务器
+	 * 查询所有服务器 
 	 */
 	public ArrayList<HashMap<String, String>> queryServers(String ip_port,
 			String viewId) throws WCMException {

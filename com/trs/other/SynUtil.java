@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +19,21 @@ import com.trs.web2frame.WCMServiceCaller;
 import com.trs.web2frame.dispatch.Dispatch;
 import com.trs.web2frame.util.JsonHelper;
 import com.trs.webframework.controler.JSPRequestProcessor;
-
+@SuppressWarnings("unchecked")
 public class SynUtil {
 
 	private static HashMap<String,String> driverMap = new HashMap<String,String>();
 	private static HashMap<String,String> IpMap = new HashMap<String,String>();
 	static{
-		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//0.0.0.0:1521/db,root,1234");
-		IpMap.put("1", "0.0.0.1");
+		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//10.0.9.30:1521/oradb,YJ_ZW_WCM,YJ_ZW_WCM!");
+		IpMap.put("1", "10.0.9.134");
+		IpMap.put("2", "10.0.9.178");
+		IpMap.put("3", "10.0.9.168");
+		IpMap.put("4", "10.0.9.206");
+		IpMap.put("5", "10.0.9.197");
+		IpMap.put("6", "10.0.9.150");
+		IpMap.put("7", "10.0.9.151");
+		IpMap.put("8", "10.0.9.174");
 	}
 	/*
 	 * 同步站点映射
@@ -52,6 +58,7 @@ public class SynUtil {
 		}
 	}
 	
+	//系统内查询
 	private ArrayList<HashMap<String,String>> queryXtn(int sysid)throws WCMException{
 		ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String,String>>();
 		Connection conn = null;
@@ -85,12 +92,47 @@ public class SynUtil {
 			}
 		}
 		return result;
-	}
+	} 
 	
-	
-	
+	//系统间查询	
 	private ArrayList<HashMap<String,String>> queryXtj(int jsd_sysid,int tsd_sysid)throws WCMException{
 		ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String,String>>();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append("select syspu.ACCEPTSITEID,ww.sitename as ASITENAME,syspu.PUSHSITEID,syspu.SITENAME as PSITENAME from XWCMSYSTEMPUSH  syspu  LEFT JOIN WCMWEBSITE ww ON syspu.ACCEPTSITEID = ww.SITEID where syspu.systemconnid="+tsd_sysid+" order by syspu.spid desc");
+			conn = this.getConnection(driverMap.get(""+jsd_sysid));
+			stmt = conn.createStatement();
+			resultSet = stmt.executeQuery(sql.toString());
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					if (resultSet.getString("ASITENAME") == null) {
+						continue;
+					}
+					HashMap<String, String> data = new HashMap<String, String>();
+					data.put("JSD_IP", IpMap.get(jsd_sysid+""));
+					data.put("TSD_IP", IpMap.get(tsd_sysid+""));
+					data.put("JSD_ID", resultSet.getString("ACCEPTSITEID") == null?"":resultSet.getString("ACCEPTSITEID"));
+					data.put("JSD_ID", resultSet.getString("PUSHSITEID") == null?"":resultSet.getString("PUSHSITEID"));
+					data.put("JSD_LMMC", resultSet.getString("ASITENAME") == null?"":resultSet.getString("ASITENAME"));
+					data.put("TSD_LMMC", resultSet.getString("PSITENAME") == null?"":resultSet.getString("PSITENAME"));	
+					result.add(data);
+				}
+			} else {
+					System.out.println(resultSet);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception   
+			e.printStackTrace();
+		}finally {
+			try {
+				this.closeConnection(resultSet, stmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return result;
 	}
 	
@@ -129,7 +171,8 @@ public class SynUtil {
 	}
 	/*
 	 * 查询所有服务器集合
-	 * */
+	 * */	
+	@SuppressWarnings("rawtypes")
 	public ArrayList<HashMap<String,String>> queryServers(int viewId)throws WCMException{
 		ContextHelper.initContext(User.findByName("admin"));
 		ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String,String>>();
@@ -173,6 +216,7 @@ public class SynUtil {
 	 * 2.系统IP(多个)
 	 * 3.站点连接栏目ID
 	 * */
+	@SuppressWarnings("rawtypes")
 	public void site_syn(String sysid,String ip,int cid)throws WCMException{
 		String[] sysids = sysid.split(",");
 		String[] ips = ip.split(",");
@@ -218,7 +262,7 @@ public class SynUtil {
 				oPostData, true, "127.0.0.1:8080");
 	}
 	
-	//接收SQL查询到的列表数据    2018-11-14
+	//接收SQL查询到的列表数据    2018-11-14 
 	private void insertSiteJoin(HashMap<String,String> dataMap,int cid)throws WCMException{
 		String sServiceId = "wcm6_MetaDataCenter";
 		String sMethodName = "savemetaviewdata";
@@ -236,6 +280,7 @@ public class SynUtil {
 				oPostData, true, "127.0.0.1:8080");
 	}
 
+	@SuppressWarnings("unused")
 	private void insertSite(String sysid,String ip,String siteid,String sitename,int cid)throws WCMException{
 		String sServiceId = "wcm6_MetaDataCenter";
 		String sMethodName = "savemetaviewdata";

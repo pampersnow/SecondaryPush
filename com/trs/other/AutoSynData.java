@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import com.trs.cms.ContextHelper;
 import com.trs.cms.auth.persistent.User;
 import com.trs.components.common.job.BaseStatefulScheduleWorker;
-import com.trs.components.wcm.content.domain.ChannelMgr;
 import com.trs.components.wcm.content.persistent.Channel;
 import com.trs.infra.common.WCMException;
 import com.trs.infra.support.config.ConfigServer;
@@ -27,7 +26,7 @@ public class AutoSynData extends BaseStatefulScheduleWorker{
 	
 	public void start(String dbtype)throws WCMException{
 		String jdbcDriver = "";
-		if("mysql".equals(dbtype)){
+		if("mysql".equals(dbtype)){ 
 			jdbcDriver = "com.mysql.jdbc.Driver,jdbc:mysql://127.0.0.1:3306/test,root,root";
 		}else{
 			jdbcDriver = "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//192.168.20.212:1521/ORCL,trs,trs";
@@ -43,6 +42,7 @@ public class AutoSynData extends BaseStatefulScheduleWorker{
 		s_logger.info("获取统计报表集合：" + tjbb);
 	}
 	
+	@Override
 	protected void execute() throws WCMException {
 		String sSfqy = CMyString.showNull(getArgAsString("sfqy"), "0");
 		if (!("1".equals(sSfqy))) {

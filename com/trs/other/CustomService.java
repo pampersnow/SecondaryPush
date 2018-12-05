@@ -16,12 +16,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sf.json.JSONArray;
-
 import org.apache.log4j.Logger;
 
-import com.drew.metadata.Metadata;
-import com.trs.ajaxservice.JSONHelper;
 import com.trs.cms.ContextHelper;
 import com.trs.cms.auth.persistent.User;
 import com.trs.components.metadata.center.MetaViewData;
@@ -40,6 +36,8 @@ import com.trs.webframework.context.MethodContext;
 import com.trs.webframework.controler.JSPRequestProcessor;
 import com.trs.webframework.provider.ISelfDefinedServiceProvider;
 
+import net.sf.json.JSONArray;
+
 public class CustomService implements ISelfDefinedServiceProvider{
 
 	private static Logger logger = Logger.getLogger(CustomService.class);
@@ -52,7 +50,7 @@ public class CustomService implements ISelfDefinedServiceProvider{
 		int nViewId = _oMethodContext.getValue("ViewId", 0);
 		JSPRequestProcessor processor = new JSPRequestProcessor(null, null);
 		String sServiceId = "wcm6_MetaDataCenter";
-        String sMethodName = "queryViewDatas";
+        String sMethodName = "queryViewDatas";   
 		HashMap parameters = new HashMap();
 		parameters.put("ViewId",nViewId);
 		parameters.put("PageSize", 2000);

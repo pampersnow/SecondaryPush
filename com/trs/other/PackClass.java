@@ -11,7 +11,7 @@ public class PackClass {
 		Integer oRoleId = 0;
 		if(nRand != null && oRand != null && !"".equals(nRand) && !"".equals(oRand)){
 			if(Integer.parseInt(nRand) != Integer.parseInt(oRand)){
-				System.out.println("验证码不对");
+				System.out.println("验证码不对");    
 			}else{
 				oRoleId = (Integer)processor.excute(sServiceId,sMethodName);
 			}

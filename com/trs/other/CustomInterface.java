@@ -17,7 +17,7 @@ import com.trs.webframework.provider.ISelfDefinedServiceProvider;
 public class CustomInterface implements ISelfDefinedServiceProvider{
 
 	public String getTJList(MethodContext _oMethodContext)throws Throwable{
-		System.out.println("统计表:请求成功。。。。");
+		System.out.println("统计表:请求成功。。。。");  
 		String sResult = "[";
 		String userName = _oMethodContext.getValue("uname");
 		User user = User.findByName(userName);

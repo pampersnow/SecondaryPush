@@ -10,13 +10,13 @@ import org.apache.commons.codec.binary.Base64;
 
 public class AesEncryptUtil {
 
-    //使用AES-128-CBC加密模式，key需要为16位,key和iv可以相同！
+    //使用AES-128-CBC加密模式，key需要为16位,key和iv可以相同！  DevStyle
     private static String KEY = "dufy20170329java";
 
     private static String IV = "dufy20170329java";
 
 
-    /**
+    /** 
      * 加密方法
      * @param data  要加密的数据
      * @param key 加密key
