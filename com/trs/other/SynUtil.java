@@ -25,15 +25,8 @@ public class SynUtil {
 	private static HashMap<String,String> driverMap = new HashMap<String,String>();
 	private static HashMap<String,String> IpMap = new HashMap<String,String>();
 	static{
-		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//10.0.9.30:1521/oradb,YJ_ZW_WCM,YJ_ZW_WCM!");
-		IpMap.put("1", "10.0.9.134");
-		IpMap.put("2", "10.0.9.178");
-		IpMap.put("3", "10.0.9.168");
-		IpMap.put("4", "10.0.9.206");
-		IpMap.put("5", "10.0.9.197");
-		IpMap.put("6", "10.0.9.150");
-		IpMap.put("7", "10.0.9.151");
-		IpMap.put("8", "10.0.9.174");
+		driverMap.put("1", "oracle.jdbc.driver.OracleDriver,jdbc:oracle:thin:@//localhost:1521/db,admin,admin!");
+		IpMap.put("1", "192.0.0.1");		
 	}
 	/*
 	 * 同步站点映射
